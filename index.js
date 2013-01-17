@@ -1,5 +1,6 @@
 var path = require('path');
 var fs = require('fs');
+var assert = require('assert');
 var tarEntries = require('tar-entries');
 
 function TarIndex(tarPath) {
@@ -94,8 +95,8 @@ function readRange(file, buffer, from, length, cb) {
 function parsePartName(name) {
   var nameParts = name.split('-');
   return {
-    tarname: nameParts.shift(),
-    part: parseInt(nameParts.shift(), 10)
+    part: parseInt(nameParts.pop(), 10),
+    tarname: nameParts.join('-')
   };
 }
 
