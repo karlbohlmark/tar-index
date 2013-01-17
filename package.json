@@ -1,0 +1,15 @@
+{
+  "name": "tar-index",
+  "version": "0.0.0",
+  "description": "Manage an index for the entries in a tar file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "tar-entries": "0.0.1"
+  }
+}
