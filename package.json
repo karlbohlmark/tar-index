@@ -9,7 +9,11 @@
   "repository": "",
   "author": "",
   "license": "BSD",
+  "bin": {
+    "tar-index": "bin/tar-index"
+  },
   "dependencies": {
-    "tar-entries": "0.0.1"
+    "tar-entries": "0.0.2",
+    "commander": "~1.1.1"
   }
 }

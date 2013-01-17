@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+var fs = require('fs');
+var path = require('path');
+
+var TarIndex = require('../');
+
+var args = process.argv.slice(2);
+
+var command = args.shift();
+
+var commands = {
+  'read': read,
+  'write': write
+};
+
+var dir = process.cwd();
+
+commands[command].apply(null, args);
+
+function read(indexname) {
+  TarIndex.readIndex(path.join(dir, indexname), function(err, entries) {
+    console.log(entries);
+  });
+}
+
+function write(tarname, indexname) {
+  var index = new TarIndex(path.join(dir, tarname));
+  if (indexname) index.indexName = indexname;
+
+  index.write(function () {
+    console.log('wrote index', index.indexName);
+  });
+}

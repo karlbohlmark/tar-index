@@ -47,6 +47,7 @@ TarIndex.prototype.readEntry = function (part, cb) {
   var index = this;
   var buf = new Buffer(8);
   function doReadEntry() {
+    console.log('read entry', part);
     readRange(index.indexName, buf, (part-1)*8, 8, function (err, bytes, buffer) {
       var s = buffer.readUInt32LE(0);
       var start = buffer.readUInt32LE(0) * 512;
@@ -61,8 +62,27 @@ TarIndex.prototype.readEntry = function (part, cb) {
   });
 };
 
+/**/
+TarIndex.readIndex = function (indexPath, cb) {
+  var buffer = fs.readFileSync(indexPath);
+  if (buffer.length % 8 !== 0) {
+    throw "Invalid index file";
+  }
+
+  var entryIndex = 0;
+  var entries = [];
+  while (entryIndex <= buffer.length/8-1) {
+    var start = buffer.readUInt32LE(entryIndex * 8);
+    var size = buffer.readUInt32LE(entryIndex * 8 + 4);
+    entries.push([start * 512, size]);
+    entryIndex++;
+  }
+  cb(null, entries);
+};
+
 
 function readRange(file, buffer, from, length, cb) {
+  console.log('read range ', file, from, length);
   fs.open(file, 'r', function (err, fd) {
     fs.read(fd, buffer, 0, length, from, function (err, bytes) {
       fs.close(fd);
